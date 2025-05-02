@@ -1,18 +1,14 @@
 from pymavlink import mavutil
+import math
 
-master = None
-
-def connect_pixhawk(port="/dev/ttyACM0", baudrate=57600):
-    global master
-    master = mavutil.mavlink_connection(port, baud=baudrate)
-    master.wait_heartbeat()
-    print("✅ Pixhawk Connected")
-
-def send_pwm(left, right, front):
-    if master:
-        master.mav.command_long_send(
-            master.target_system, master.target_component,
-            mavutil.mavlink.MAV_CMD_DO_SET_SERVO,
-            0, 1, left, 2, right, 3, front, 0
-        )
-        print(f"⚙️ PWM Sent: Left={left}, Right={right}, Front={front}")
+def get_heading(port="/dev/ttyACM0", baud=57600):
+    try:
+        master = mavutil.mavlink_connection(port, baud=baud)
+        master.wait_heartbeat()
+        msg = master.recv_match(type='ATTITUDE', blocking=True)
+        yaw = (math.degrees(msg.yaw) + 360) % 360
+        print("🧭 Heading:", yaw)
+        return yaw
+    except Exception as e:
+        print("❌ Heading Error:", e)
+        return None

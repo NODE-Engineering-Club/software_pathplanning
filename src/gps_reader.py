@@ -1,14 +1,24 @@
 import serial
 import pynmea2
 
-def get_heading(port="/dev/ttyACM0", baud=115200):
+def get_live_gps(port="/dev/ttyACM0", baudrate=115200):
     try:
-        port = serial.Serial(port_name, baudrate=baudrate, timeout=1)
+        gps_serial = serial.Serial(port, baudrate=baudrate, timeout=1)
+        print(f"✅ Connected to GPS on {port} at {baudrate} baud")
+
         while True:
-            line = port.readline().decode("ascii", errors="replace")
+            line = gps_serial.readline().decode("ascii", errors="replace").strip()
             if line.startswith("$GNGGA") or line.startswith("$GPGGA"):
-                msg = pynmea2.parse(line)
-                return msg.latitude, msg.longitude
+                try:
+                    msg = pynmea2.parse(line)
+                    lat = msg.latitude
+                    lon = msg.longitude
+                    if lat and lon:
+                        print(f"📍 Latitude: {lat}, Longitude: {lon}")
+                        return lat, lon
+                except pynmea2.ParseError:
+                    continue
     except Exception as e:
-        print("GPS Error:", e)
+        print("❌ GPS Error:", e)
         return None, None
+
