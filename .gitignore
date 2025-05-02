@@ -1,0 +1,23 @@
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+# folder to ignore
+data/
+.ec_vision/
+src/__pycache__/
+
+# files to ignore vision.ipynb
+*src/vision.ipynb
+
+
+# exceptions
