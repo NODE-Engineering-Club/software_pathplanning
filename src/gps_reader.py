@@ -1,7 +1,7 @@
 import serial
 import pynmea2
 
-def get_live_gps(port_name="COM3", baudrate=9600): #  def get_heading(port="/dev/ttyACM0", baud=57600):
+def get_heading(port="/dev/ttyACM0", baud=115200):
     try:
         port = serial.Serial(port_name, baudrate=baudrate, timeout=1)
         while True:
