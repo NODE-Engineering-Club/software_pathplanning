@@ -1,0 +1,6 @@
+# For GPS reading (gps_reader.py)
+pyserial
+pynmea2
+
+# For Pixhawk heading & PWM (heading_reader.py and pwm_controller.py)
+pymavlink
