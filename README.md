@@ -1,4 +1,4 @@
-# Pathfinnding Test and Logic scropts
+# Pathfinding Test and Logic scripts
 to test the hardware run #test_(file name).py file
 ## Software vision team:
 - [Samarth Pachchigar](www.linkedin.com/in/samarth-pachchigar-245a48114)
