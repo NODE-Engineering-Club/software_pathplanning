@@ -4,3 +4,9 @@ pynmea2
 
 # For Pixhawk heading & PWM (heading_reader.py and pwm_controller.py)
 pymavlink
+
+# Vision - OpenCV
+opencv-python
+
+# Optional (if using picamera2 for Raspberry Pi camera)
+picamera2
