@@ -2,7 +2,7 @@
 to test the hardware run #test_(file name).py file
 ## Software vision team:
 - [Samarth Pachchigar](www.linkedin.com/in/samarth-pachchigar-245a48114)
-- [Nitsan](https://www.linkedin.com/in/nitsan-mor/)
+- [Nitsan Mor](https://www.linkedin.com/in/nitsan-mor/)
 
 ## Tasks:
 >**2025-04-11:** <br>
