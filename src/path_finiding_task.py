@@ -6,6 +6,7 @@ import webbrowser
 import time
 import random
 import keyboard
+import json
 
 # ------------------------
 # CV-Based Buoy Heading Correction Functions
@@ -59,6 +60,13 @@ def heading_adjustment_from_buoy(offset_cm, distance_cm, buoy_type, safe_margin_
 def apply_cv_navigation(vessel, buoy_detections, frame_dims, fov, buoy_real_height_cm=60, safe_margin_cm=100):
     if not buoy_detections:
         return
+    
+    # If data was loaded from JSON (dict format), convert to list
+    if isinstance(buoy_detections, dict):
+        buoy_detections = list(buoy_detections.values())
+
+    elif not isinstance(buoy_detections, list):
+        raise ValueError("Unsupported buoy_detections format")
 
     elif len(buoy_detections) == 1:
         b = buoy_detections[0]
@@ -86,20 +94,31 @@ def apply_cv_navigation(vessel, buoy_detections, frame_dims, fov, buoy_real_heig
     vessel.heading = (vessel.heading + heading_adjustment) % 360
     vessel.speed = 0.5 if heading_adjustment != 0 else 1.0
 
+# Read live buoy detections from a shared JSON file #-------> new function
+def read_live_buoy_detections(filepath="buoy_detections.json"):
+    try:
+        with open(filepath, "r") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
 # Simulate buoy detections for testing (returns 0–2 detections per frame)
-def read_dummy_cv_buoy_detections():
-    detections = []
-    if random.random() < 0.3:
-        num_buoys = random.choice([1, 2])
-        for _ in range(num_buoys):
-            detections.append({
-                'type': random.choice(['red', 'green', 'west', 'east']),
-                'x': random.randint(200, 1000),
-                'y': random.randint(200, 700),
-                'w': random.randint(30, 80),
-                'h': random.randint(100, 200)
-            })
-    return detections
+# def read_dummy_cv_buoy_detections():
+#     detections = []
+#     if random.random() < 0.3:
+#         num_buoys = random.choice([1, 2])
+#         for _ in range(num_buoys):
+#             detections.append({
+#                 'type': random.choice(['red', 'green', 'west', 'east']),
+#                 'x': random.randint(200, 1000),
+#                 'y': random.randint(200, 700),
+#                 'w': random.randint(30, 80),
+#                 'h': random.randint(100, 200)
+#             })
+#     return detections
+
+
+
 
 # ------------------------
 # Navigation System
@@ -165,13 +184,20 @@ while current_wp_index < len(waypoints):
         break
 
     target_wp = waypoints[current_wp_index]
-    cv_detections = read_dummy_cv_buoy_detections()
+    buoy_detections = read_live_buoy_detections() #-------> new line
+    # cv_detections = read_dummy_cv_buoy_detections()
 
-    if cv_detections:
-        apply_cv_navigation(vessel, cv_detections, frame_dims, fov, buoy_real_height_cm=60)
+    if buoy_detections: #-------> new line
+        apply_cv_navigation(vessel, buoy_detections, frame_dims, fov, buoy_real_height_cm=60)
     else:
         correct_heading_toward_waypoint(vessel, target_wp)
         vessel.speed = 1.0
+
+    # if cv_detections:
+    #     apply_cv_navigation(vessel, cv_detections, frame_dims, fov, buoy_real_height_cm=60)
+    # else:
+    #     correct_heading_toward_waypoint(vessel, target_wp)
+    #     vessel.speed = 1.0
 
     if distance(vessel.position, target_wp) < 0.0002:
         print(f"[STATUS] Reached waypoint {current_wp_index}: {target_wp}")
