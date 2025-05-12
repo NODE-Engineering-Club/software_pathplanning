@@ -1,7 +1,7 @@
 from pymavlink import mavutil
 import math
 
-def get_heading(port="/dev/ttyACM0", baud=57600):
+def get_heading(port="/dev/ttyACM0", baud=57600): # Update if needed
     """
     Connects to Pixhawk and returns heading in degrees.
     """
