@@ -1,6 +1,6 @@
 # Pathfinding Test and Logic scripts
 to test the hardware run #test_(file name).py file
-## Software vision team:
+## Software path finding team:
 - [Samarth Pachchigar](www.linkedin.com/in/samarth-pachchigar-245a48114)
 - [Nitsan Mor](https://www.linkedin.com/in/nitsan-mor/)
 
