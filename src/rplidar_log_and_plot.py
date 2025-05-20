@@ -67,6 +67,9 @@ with open(csv_file_path, mode='w', newline='') as file:
                     if quality > 0 and 0 < distance < 10000:
                         timestamp = time.strftime("%Y-%m-%d %H:%M:%S.%f")
                         writer.writerow([timestamp, angle, distance, quality])
+                        
+                        print(f"{timestamp}  Angle: {angle:.2f}°  Distance: {distance:.1f} mm  Quality: {quality}")
+
                         angles.append(math.radians(angle))
                         distances.append(distance)
 
