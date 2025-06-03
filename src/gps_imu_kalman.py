@@ -57,7 +57,7 @@ class KalmanFilter:
 
 
 # === GPS Reading ===
-def get_gps_coordinates(port="/dev/ttyACM0", baudrate=9600):
+def get_gps_coordinates(port="udp:127.0.0.1:14551", baudrate=9600):
     gps = serial.Serial(port, baudrate=baudrate, timeout=1)
     while True:
         line = gps.readline().decode("ascii", errors="replace").strip()
@@ -73,7 +73,7 @@ def get_gps_coordinates(port="/dev/ttyACM0", baudrate=9600):
 
 
 # === IMU Heading Reading ===
-def get_heading(port="/dev/ttyACM0", baud=57600):
+def get_heading(port="udp:127.0.0.1:14551", baud=57600):
     try:
         master = mavutil.mavlink_connection(port, baud=baud)
         master.wait_heartbeat()
