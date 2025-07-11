@@ -15,6 +15,7 @@
 data/
 .ec_vision/
 src/__pycache__/
+.venv
 
 # files to ignore vision.ipynb
 *src/vision.ipynb
